@@ -11,3 +11,7 @@ const PORT = 3000;
 app.use(bodyParser.json())
 
 app.use('/api',seatRoutes)
+
+app.listen(PORT,()=>{
+     console.log('server is running')
+})
