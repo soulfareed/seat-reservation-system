@@ -10,4 +10,7 @@ const db = mysql.createPool({
     database: 'seat-reservation'
 })
 
-router.get('seats')
+router.get('/seats', async(req: Request,res: Response)=>{
+    const[rows] = await db.query('SELECT * from seats')
+    res.json(rows)
+})
