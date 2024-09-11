@@ -1,4 +1,5 @@
- export interface Seat{
+ 
+ export type Seat={
     id: 'number',
     seat_number: 'number',
     row_number: 'number',
