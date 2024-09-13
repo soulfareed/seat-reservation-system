@@ -39,5 +39,30 @@ export const reserveSeats = async (req: Request, res: Response) => {
         break;
       }
     }
-  } catch (err) {}
+
+    if (reservedSeats.length === 0) {
+      reservedSeats = availableSeats.slice(0, seatCount);
+    }
+
+    const seatNumber = reservedSeats.map((seat) => {
+      seat.seat_number;
+    });
+    await db.query(
+      'UPDATE seats SET status = "booked" WHERE seat_number IN (?)',
+      [seatNumber]
+    );
+
+    res.json({ message: "Seats reserved", reservedSeats: seatNumber });
+  } catch (err) {
+    res.status(500).json({ message: "Error reserving seats", err });
+  }
+};
+const groupSeatsByRow = (seats: Seat[]): Seat[][] => {
+  return seats.reduce((rows: Seat[][], seat) => {
+    if (!rows[seat.row_number]) {
+      rows[seat.row_number] = [];
+    }
+    rows[seat.row_number].push(seat);
+    return rows;
+  }, []);
 };
