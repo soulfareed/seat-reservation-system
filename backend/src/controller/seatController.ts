@@ -31,9 +31,9 @@ export const reserveSeats = async (req: Request, res: Response) => {
     }
 
     let reservedSeats: Seat[] = [];
-    const groupedByRow = groupedByRow(availableSeats);
+    const groupedByRow = groupSeatsByRow(availableSeats as Seat[]);
 
-    for (const rowSeats of groupedByRow) {
+    for (const rowSeats of Object.values(groupedByRow)) {
       if (rowSeats.length >= seatCount) {
         reservedSeats = rowSeats.slice(0, seatCount);
         break;
@@ -41,18 +41,16 @@ export const reserveSeats = async (req: Request, res: Response) => {
     }
 
     if (reservedSeats.length === 0) {
-      reservedSeats = availableSeats.slice(0, seatCount);
+      reservedSeats = availableSeats.slice(0, seatCount) as Seat[];
     }
 
-    const seatNumber = reservedSeats.map((seat) => {
-      seat.seat_number;
-    });
+    const seatNumbers = reservedSeats.map((seat) => seat.seat_number);
     await db.query(
       'UPDATE seats SET status = "booked" WHERE seat_number IN (?)',
-      [seatNumber]
+      [seatNumbers]
     );
 
-    res.json({ message: "Seats reserved", reservedSeats: seatNumber });
+    res.json({ message: "Seats reserved", reservedSeats: seatNumbers });
   } catch (err) {
     res.status(500).json({ message: "Error reserving seats", err });
   }
