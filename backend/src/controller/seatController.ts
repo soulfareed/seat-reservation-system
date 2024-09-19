@@ -48,19 +48,19 @@ export const reserveSeats = async (req: Request, res: Response) => {
     await db.query(
       'UPDATE seats SET status = "booked" WHERE seat_number IN (?)',
       [seatNumbers]
-//     );
+    );
 
-//     res.json({ message: "Seats reserved", reservedSeats: seatNumbers });
-//   } catch (err) {
-//     res.status(500).json({ message: "Error reserving seats", err });
-//   }
-// };
-// const groupSeatsByRow = (seats: Seat[]): Seat[][] => {
-//   return seats.reduce((rows: Seat[][], seat) => {
-//     if (!rows[seat.row_number]) {
-//       rows[seat.row_number] = [];
-//     }
-//     rows[seat.row_number].push(seat);
-//     return rows;
-//   }, []);
-// };
+    res.json({ message: "Seats reserved", reservedSeats: seatNumbers });
+  } catch (err) {
+    res.status(500).json({ message: "Error reserving seats", err });
+  }
+};
+const groupSeatsByRow = (seats: Seat[]): Seat[][] => {
+  return seats.reduce((rows: Seat[][], seat) => {
+    if (!rows[seat.row_number]) {
+      rows[seat.row_number] = [];
+    }
+    rows[seat.row_number].push(seat);
+    return rows;
+  }, []);
+};
