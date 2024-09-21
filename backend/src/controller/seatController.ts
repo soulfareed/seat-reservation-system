@@ -54,13 +54,13 @@ export const reserveSeats = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({ message: "Error reserving seats", err });
   }
-// };
-// const groupSeatsByRow = (seats: Seat[]): Seat[][] => {
-//   return seats.reduce((rows: Seat[][], seat) => {
-//     if (!rows[seat.row_number]) {
-//       rows[seat.row_number] = [];
-//     }
-//     rows[seat.row_number].push(seat);
-//     return rows;
-//   }, []);
-// };
+};
+const groupSeatsByRow = (seats: Seat[]): Seat[][] => {
+  return seats.reduce((rows: Seat[][], seat) => {
+    if (!rows[seat.row_number]) {
+      rows[seat.row_number] = [];
+    }
+    rows[seat.row_number].push(seat);
+    return rows;
+  }, []);
+};
